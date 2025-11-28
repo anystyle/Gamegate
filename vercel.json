@@ -1,13 +1,22 @@
 {
   "version": 2,
-  "name": "gamegate",
-  "buildCommand": "npm run vercel-build",
-  "outputDirectory": "dist",
+  "builds": [
+    {
+      "src": "api/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    }
+  ],
   "functions": {
-    "src/api/index.js": {
+    "api/index.js": {
       "runtime": "nodejs18.x",
-      "maxDuration": 10,
-      "memory": 512
+      "maxDuration": 10
     }
   },
   "rewrites": [
@@ -20,12 +29,8 @@
       "destination": "/games/$1"
     },
     {
-      "source": "/index.html",
-      "destination": "/index_en.html"
-    },
-    {
       "source": "/(.*)",
-      "destination": "/index_en.html"
+      "destination": "/index.html"
     }
   ],
   "headers": [
@@ -34,22 +39,11 @@
       "headers": [
         {
           "key": "Cache-Control",
-          "value": "public, max-age=31536000, must-revalidate"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
-        }
-      ]
-    },
-    {
-      "source": "/(.*\\.(js|mjs|json|ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot))",
-      "headers": [
-        {
-          "key": "Cache-Control",
           "value": "public, max-age=31536000, immutable"
         }
       ]
     }
-  ]
+  ],
+  "regions": ["cle1", "hkg2", "sin1"],
+  "outputDirectory": "dist"
 }

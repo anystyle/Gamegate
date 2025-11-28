@@ -2,22 +2,48 @@ import { defineConfig } from 'vite';
 
 export default defineConfig(({ command, mode }) => {
   const isProduction = mode === 'production';
-  const isVercelBuild = process.env.VERCEL === '1' || command === 'build';
+  const isVercelBuild = process.env.VERCEL === '1';
+
+  // Base configuration
+  const baseConfig = {
+    root: '.',
+    publicDir: 'public',
+    build: {
+      outDir: 'dist',
+      target: 'es2015',
+      minify: 'terser',
+      sourcemap: !isProduction,
+      rollupOptions: {
+        input: {
+          main: 'public/index.html',
+          en: 'public/index_en.html'
+        }
+      }
+    },
+    resolve: {
+      alias: {
+        // Node.js polyfills for development only
+        'buffer': 'buffer',
+        'stream': 'stream',
+        'util': 'util',
+        'url': 'url',
+        'querystring': 'querystring'
+      }
+    },
+    server: {
+      port: 3000,
+      open: true
+    }
+  };
 
   if (isVercelBuild) {
     // Vercel-specific configuration
     return {
-      plugins: [
-        require('@vitejs/plugin-legacy')({
-          targets: ['defaults', 'not IE 11'],
-          additionalLegacyPolyfills: ['whatwg-fetch']
-        })
-      ],
+      ...baseConfig,
       build: {
-        target: 'es2015',
-        minify: 'terser',
-        sourcemap: false,
+        ...baseConfig.build,
         rollupOptions: {
+          ...baseConfig.build.rollupOptions,
           output: {
             manualChunks: {
               vendor: ['express', 'cors', 'helmet'],
@@ -27,14 +53,7 @@ export default defineConfig(({ command, mode }) => {
         }
       },
       resolve: {
-        alias: {
-          // Keep Node.js polyfills for development
-          'buffer': 'buffer',
-          'stream': 'stream',
-          'util': 'util',
-          'url': 'url',
-          'querystring': 'querystring'
-        },
+        ...baseConfig.resolve,
         // No polyfills for production to avoid conflicts
         browserField: false,
         mainFields: ['browser', 'module', 'main']
@@ -42,37 +61,26 @@ export default defineConfig(({ command, mode }) => {
       optimizeDeps: {
         include: ['express', 'cors', 'helmet']
       },
-      server: {
-        fs: {
-          strict: false
-        },
-        preTransformRequests: {
-          // Don't transform Node.js modules
-          transform: (request) => {
-            if (request.url.includes('/node_modules/')) {
-              return null; // Skip transformation for Node.js modules
-            }
-          }
-        }
-      },
       esbuild: {
         target: 'es2015',
-        platform: 'node'
+        platform: 'browser'
       }
     };
   }
 
   // Local development configuration
   return {
+    ...baseConfig,
     plugins: [
       require('@vitejs/plugin-legacy')({
         targets: ['defaults', 'not IE 11']
       })
     ],
     build: {
-      target: 'es2015',
+      ...baseConfig.build,
       sourcemap: true,
       rollupOptions: {
+        ...baseConfig.build.rollupOptions,
         output: {
           manualChunks: {
             vendor: ['express', 'cors', 'helmet', 'compression', 'express-rate-limit', 'node-cache'],
@@ -81,27 +89,18 @@ export default defineConfig(({ command, mode }) => {
         }
       }
     },
-    resolve: {
-      alias: {
-        // Node.js polyfills for development
-        'buffer': 'buffer',
-        'stream': 'stream',
-        'util': 'util',
-        'url': 'url',
-        'querystring': 'querystring'
-      }
-    },
     optimizeDeps: {
       include: ['express', 'cors', 'helmet']
     },
     server: {
+      ...baseConfig.server,
       fs: {
         strict: false
       }
     },
     esbuild: {
       target: 'es2015',
-      platform: 'node'
+      platform: 'browser'
     },
     define: {
       // Environment variables

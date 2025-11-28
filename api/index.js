@@ -1,5 +1,5 @@
 // Vercel Serverless Function for GameGate
-const { games, getGamesByScenario, getGamesByTime, getPopularGames, searchGames } = require('../src/data/games_en');
+const { games, getGamesByScenario, getGamesByTime, getPopularGames, searchGames } = require('../src/data/games_en.js');
 
 // Mock user data for demo
 const mockUser = {
