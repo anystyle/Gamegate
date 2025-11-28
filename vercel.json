@@ -23,8 +23,16 @@
       "destination": "/games/$1"
     },
     {
+      "source": "/",
+      "destination": "/public/index_en.html"
+    },
+    {
+      "source": "/index.html",
+      "destination": "/public/index.html"
+    },
+    {
       "source": "/(.*)",
-      "destination": "/index.html"
+      "destination": "/public/index.html"
     }
   ],
   "headers": [
