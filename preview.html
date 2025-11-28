@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameGate 预览 - 轻量级解压小游戏聚合平台</title>
+    <meta name="description" content="即开即玩、无负担休闲 - 专为碎片时间设计的轻量级小游戏">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .animate-gradient {
+            background-size: 200% 200%;
+            animation: gradient 8s linear infinite;
+        }
+
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .game-card {
+            transition: all 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .scenario-btn {
+            transition: all 0.2s ease;
+        }
+
+        .scenario-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen font-sans">
+    <!-- 顶部导航栏 -->
+    <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo和品牌 -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center animate-gradient bg-size-200">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M21.6 8.2l-9.6-6c-.6-.4-1.4-.4-2 0l-9.6 6c-.6.4-1 1-1 1.7v8.2c0 .7.4 1.3 1 1.7l9.6 6c.6.4 1.4.4 2 0l9.6-6c.6-.4 1-1 1-1.7V9.9c0-.7-.4-1.3-1-1.7zM12 17.2l-6.8-4.2 6.8-4.2 6.8 4.2-6.8 4.2z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">GameGate</h1>
+                        <p class="text-xs text-gray-500">轻量级解压小游戏</p>
+                    </div>
+                </div>
+
+                <!-- 场景选择 -->
+                <div class="hidden md:flex items-center space-x-2 bg-gray-50 rounded-full px-4 py-2">
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full bg-indigo-500 text-white" onclick="setScenario('通勤')">
+                        🚇 通勤
+                    </button>
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200" onclick="setScenario('午休')">
+                        ☕ 午休
+                    </button>
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200" onclick="setScenario('摸鱼')">
+                        🐟 摸鱼
+                    </button>
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200" onclick="setScenario('减压')">
+                        🧘 减压
+                    </button>
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200" onclick="setScenario('睡前')">
+                        🌙 睡前
+                    </button>
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200" onclick="setScenario('提神')">
+                        ⚡ 提神
+                    </button>
+                </div>
+
+                <!-- 搜索 -->
+                <div class="relative">
+                    <input type="text" placeholder="搜索游戏..." class="w-48 sm:w-64 px-4 py-2 pl-10 text-sm border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-transparent">
+                    <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区域 -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Hero 区域 -->
+        <section class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">
+                <span class="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+                    即开即玩，无负担休闲
+                </span>
+            </h2>
+            <p class="text-gray-600 mb-6 max-w-2xl mx-auto">
+                专为碎片时间设计的轻量级解压小游戏，支持通勤、午休、摸鱼、减压等多种场景，让你的等待时间更有趣
+            </p>
+
+            <!-- 快速统计 -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-6">
+                <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="text-2xl font-bold text-indigo-500">10+</div>
+                    <div class="text-sm text-gray-500">精选小游戏</div>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="text-2xl font-bold text-green-500">3-10</div>
+                    <div class="text-sm text-gray-500">分钟游戏时长</div>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="text-2xl font-bold text-amber-500">6</div>
+                    <div class="text-sm text-gray-500">应用场景</div>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="text-2xl font-bold text-blue-500">100%</div>
+                    <div class="text-sm text-gray-500">即开即玩</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 游戏分类筛选 -->
+        <section class="mb-6">
+            <div class="flex flex-wrap gap-2 justify-center">
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium shadow-sm hover:shadow-md" onclick="filterByCategory('all')">
+                    全部游戏
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium shadow-sm hover:shadow-md" onclick="filterByCategory('益智')">
+                    🧩 益智
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium shadow-sm hover:shadow-md" onclick="filterByCategory('消除')">
+                    🎯 消除
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium shadow-sm hover:shadow-md" onclick="filterByCategory('反应')">
+                    ⚡ 反应
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium shadow-sm hover:shadow-md" onclick="filterByCategory('记忆')">
+                    🧠 记忆
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium shadow-sm hover:shadow-md" onclick="filterByCategory('策略')">
+                    ♟️ 策略
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium shadow-sm hover:shadow-md" onclick="filterByCategory('填色')">
+                    🎨 填色
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium shadow-sm hover:shadow-md" onclick="filterByCategory('模拟')">
+                    🎮 模拟
+                </button>
+            </div>
+        </section>
+
+        <!-- 推荐游戏区域 -->
+        <section class="mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">为你推荐</h3>
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm text-gray-500" id="recommendationReason">基于当前场景推荐</span>
+                    <button class="p-1 hover:bg-gray-100 rounded-full" onclick="refreshRecommendations()">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="recommendedGames" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <!-- 推荐游戏 -->
+                <div class="bg-white rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow" onclick="openGamePreview(2048)">
+                    <div class="aspect-square bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg mb-2 flex items-center justify-center animate-float">
+                        <span class="text-3xl">🧩</span>
+                    </div>
+                    <h4 class="font-medium text-sm text-gray-900 mb-1 truncate">2048数字方块</h4>
+                    <p class="text-xs text-gray-500">3分钟 • 简单</p>
+                    <p class="text-xs text-indigo-600 mt-1">最适合通勤时间</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow" onclick="openGamePreview(102)">
+                    <div class="aspect-square bg-gradient-to-br from-pink-100 to-orange-100 rounded-lg mb-2 flex items-center justify-center animate-float">
+                        <span class="text-3xl">🎯</span>
+                    </div>
+                    <h4 class="font-medium text-sm text-gray-900 mb-1 truncate">彩球消除</h4>
+                    <p class="text-xs text-gray-500">5分钟 • 简单</p>
+                    <p class="text-xs text-indigo-600 mt-1">减压放松首选</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow" onclick="openGamePreview(103)">
+                    <div class="aspect-square bg-gradient-to-br from-green-100 to-blue-100 rounded-lg mb-2 flex items-center justify-center animate-float">
+                        <span class="text-3xl">⌨️</span>
+                    </div>
+                    <h4 class="font-medium text-sm text-gray-900 mb-1 truncate">极速打字</h4>
+                    <p class="text-xs text-gray-500">2分钟 • 中等</p>
+                    <p class="text-xs text-indigo-600 mt-1">锻炼打字速度</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow" onclick="openGamePreview(201)">
+                    <div class="aspect-square bg-gradient-to-br from-yellow-100 to-red-100 rounded-lg mb-2 flex items-center justify-center animate-float">
+                        <span class="text-3xl">💣</span>
+                    </div>
+                    <h4 class="font-medium text-sm text-gray-900 mb-1 truncate">迷你扫雷</h4>
+                    <p class="text-xs text-gray-500">6分钟 • 中等</p>
+                    <p class="text-xs text-indigo-600 mt-1">经典益智游戏</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow" onclick="openGamePreview(202)">
+                    <div class="aspect-square bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg mb-2 flex items-center justify-center animate-float">
+                        <span class="text-3xl">🧠</span>
+                    </div>
+                    <h4 class="font-medium text-sm text-gray-900 mb-1 truncate">记忆翻牌</h4>
+                    <p class="text-xs text-gray-500">4分钟 • 简单</p>
+                    <p class="text-xs text-indigo-600 mt-1">记忆力训练</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow" onclick="openGamePreview(402)">
+                    <div class="aspect-square bg-gradient-to-br from-cyan-100 to-blue-100 rounded-lg mb-2 flex items-center justify-center animate-float">
+                        <span class="text-3xl">🫧</span>
+                    </div>
+                    <h4 class="font-medium text-sm text-gray-900 mb-1 truncate">泡泡龙</h4>
+                    <p class="text-xs text-gray-500">5分钟 • 中等</p>
+                    <p class="text-xs text-indigo-600 mt-1">休闲消除游戏</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 游戏列表 -->
+        <section>
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">所有游戏</h3>
+                <div class="flex items-center space-x-4">
+                    <select class="px-3 py-1 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50">
+                        <option value="popularity">热门优先</option>
+                        <option value="playTime">时长优先</option>
+                        <option value="rating">评分优先</option>
+                        <option value="newest">最新优先</option>
+                    </select>
+                    <div class="flex items-center space-x-1 text-sm text-gray-500">
+                        <span>12</span>
+                        <span>款游戏</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- 2048数字方块 -->
+                <div class="game-card bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer" onclick="openGamePreview(101)">
+                    <div class="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white/80 rounded-full flex items-center justify-center">
+                                <span class="text-2xl">🧩</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 px-2 py-1 bg-white/90 rounded-full text-xs font-medium">
+                            3分钟
+                        </div>
+                        <div class="absolute top-2 left-2 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                            简单
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-1">2048数字方块</h3>
+                        <p class="text-sm text-gray-600 mb-2 line-clamp-2">数字合成游戏，锻炼逻辑思维</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-500">益智</span>
+                                <span class="text-gray-400">•</span>
+                                <div class="flex items-center">
+                                    <svg class="w-3 h-3 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                    </svg>
+                                    <span class="text-gray-700">4.5</span>
+                                </div>
+                            </div>
+                            <span class="text-green-500">✓ 无广告</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 彩球消除 -->
+                <div class="game-card bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer" onclick="openGamePreview(102)">
+                    <div class="aspect-video bg-gradient-to-br from-pink-100 to-orange-100 relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white/80 rounded-full flex items-center justify-center">
+                                <span class="text-2xl">🎯</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 px-2 py-1 bg-white/90 rounded-full text-xs font-medium">
+                            5分钟
+                        </div>
+                        <div class="absolute top-2 left-2 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                            简单
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-1">彩球消除</h3>
+                        <p class="text-sm text-gray-600 mb-2 line-clamp-2">点击消除相同颜色的彩球</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-500">消除</span>
+                                <span class="text-gray-400">•</span>
+                                <div class="flex items-center">
+                                    <svg class="w-3 h-3 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                    </svg>
+                                    <span class="text-gray-700">4.3</span>
+                                </div>
+                            </div>
+                            <span class="text-green-500">✓ 无广告</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 极速打字 -->
+                <div class="game-card bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer" onclick="openGamePreview(103)">
+                    <div class="aspect-video bg-gradient-to-br from-green-100 to-blue-100 relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white/80 rounded-full flex items-center justify-center">
+                                <span class="text-2xl">⌨️</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 px-2 py-1 bg-white/90 rounded-full text-xs font-medium">
+                            2分钟
+                        </div>
+                        <div class="absolute top-2 left-2 px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">
+                            中等
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-1">极速打字</h3>
+                        <p class="text-sm text-gray-600 mb-2 line-clamp-2">测试你的打字速度和准确度</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-500">打字</span>
+                                <span class="text-gray-400">•</span>
+                                <div class="flex items-center">
+                                    <svg class="w-3 h-3 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                    </svg>
+                                    <span class="text-gray-700">4.2</span>
+                                </div>
+                            </div>
+                            <span class="text-green-500">✓ 无广告</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 迷你扫雷 -->
+                <div class="game-card bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer" onclick="openGamePreview(201)">
+                    <div class="aspect-video bg-gradient-to-br from-yellow-100 to-red-100 relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white/80 rounded-full flex items-center justify-center">
+                                <span class="text-2xl">💣</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 px-2 py-1 bg-white/90 rounded-full text-xs font-medium">
+                            6分钟
+                        </div>
+                        <div class="absolute top-2 left-2 px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">
+                            中等
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-1">迷你扫雷</h3>
+                        <p class="text-sm text-gray-600 mb-2 line-clamp-2">经典扫雷游戏的简化版</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-500">策略</span>
+                                <span class="text-gray-400">•</span>
+                                <div class="flex items-center">
+                                    <svg class="w-3 h-3 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                    </svg>
+                                    <span class="text-gray-700">4.6</span>
+                                </div>
+                            </div>
+                            <span class="text-green-500">✓ 无广告</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 记忆翻牌 -->
+                <div class="game-card bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer" onclick="openGamePreview(202)">
+                    <div class="aspect-video bg-gradient-to-br from-purple-100 to-pink-100 relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white/80 rounded-full flex items-center justify-center">
+                                <span class="text-2xl">🧠</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 px-2 py-1 bg-white/90 rounded-full text-xs font-medium">
+                            4分钟
+                        </div>
+                        <div class="absolute top-2 left-2 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                            简单
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-1">记忆翻牌</h3>
+                        <p class="text-sm text-gray-600 mb-2 line-clamp-2">翻开相同的卡片进行配对</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-500">记忆</span>
+                                <span class="text-gray-400">•</span>
+                                <div class="flex items-center">
+                                    <svg class="w-3 h-3 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                    </svg>
+                                    <span class="text-gray-700">4.4</span>
+                                </div>
+                            </div>
+                            <span class="text-green-500">✓ 无广告</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 数字填色 -->
+                <div class="game-card bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer" onclick="openGamePreview(301)">
+                    <div class="aspect-video bg-gradient-to-br from-indigo-100 to-purple-100 relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white/80 rounded-full flex items-center justify-center">
+                                <span class="text-2xl">🎨</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 px-2 py-1 bg-white/90 rounded-full text-xs font-medium">
+                            8分钟
+                        </div>
+                        <div class="absolute top-2 left-2 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                            简单
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-1">数字填色</h3>
+                        <p class="text-sm text-gray-600 mb-2 line-clamp-2">按数字填充颜色，创作美丽图案</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-500">填色</span>
+                                <span class="text-gray-400">•</span>
+                                <div class="flex items-center">
+                                    <svg class="w-3 h-3 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                    </svg>
+                                    <span class="text-gray-700">4.8</span>
+                                </div>
+                            </div>
+                            <span class="text-green-500">✓ 无广告</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 模拟钓鱼 -->
+                <div class="game-card bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer" onclick="openGamePreview(302)">
+                    <div class="aspect-video bg-gradient-to-br from-blue-100 to-cyan-100 relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white/80 rounded-full flex items-center justify-center">
+                                <span class="text-2xl">🎣</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 px-2 py-1 bg-white/90 rounded-full text-xs font-medium">
+                            10分钟
+                        </div>
+                        <div class="absolute top-2 left-2 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                            简单
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-1">模拟钓鱼</h3>
+                        <p class="text-sm text-gray-600 mb-2 line-clamp-2">轻松的钓鱼体验，收集各种鱼类</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-500">模拟</span>
+                                <span class="text-gray-400">•</span>
+                                <div class="flex items-center">
+                                    <svg class="w-3 h-3 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                    </svg>
+                                    <span class="text-gray-700">4.3</span>
+                                </div>
+                            </div>
+                            <span class="text-green-500">✓ 无广告</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 打地鼠 -->
+                <div class="game-card bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer" onclick="openGamePreview(401)">
+                    <div class="aspect-video bg-gradient-to-br from-orange-100 to-red-100 relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white/80 rounded-full flex items-center justify-center">
+                                <span class="text-2xl">🔨</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 px-2 py-1 bg-white/90 rounded-full text-xs font-medium">
+                            3分钟
+                        </div>
+                        <div class="absolute top-2 left-2 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                            简单
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-1">打地鼠</h3>
+                        <p class="text-sm text-gray-600 mb-2 line-clamp-2">快速点击出现的地鼠</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-500">反应</span>
+                                <span class="text-gray-400">•</span>
+                                <div class="flex items-center">
+                                    <svg class="w-3 h-3 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                    </svg>
+                                    <span class="text-gray-700">4.4</span>
+                                </div>
+                            </div>
+                            <span class="text-green-500">✓ 无广告</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 泡泡龙 -->
+                <div class="game-card bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer" onclick="openGamePreview(402)">
+                    <div class="aspect-video bg-gradient-to-br from-cyan-100 to-blue-100 relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white/80 rounded-full flex items-center justify-center">
+                                <span class="text-2xl">🫧</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 px-2 py-1 bg-white/90 rounded-full text-xs font-medium">
+                            5分钟
+                        </div>
+                        <div class="absolute top-2 left-2 px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">
+                            中等
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-1">泡泡龙</h3>
+                        <p class="text-sm text-gray-600 mb-2 line-clamp-2">发射泡泡消除相同颜色的泡泡群</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-500">射击</span>
+                                <span class="text-gray-400">•</span>
+                                <div class="flex items-center">
+                                    <svg class="w-3 h-3 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                    </svg>
+                                    <span class="text-gray-700">4.5</span>
+                                </div>
+                            </div>
+                            <span class="text-green-500">✓ 无广告</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 更多游戏 -->
+                <div class="game-card bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-sm overflow-hidden cursor-pointer flex items-center justify-center border-2 border-dashed border-gray-300" onclick="showMoreGames()">
+                    <div class="text-center p-6">
+                        <svg class="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        <h3 class="font-medium text-gray-700 mb-1">更多游戏</h3>
+                        <p class="text-xs text-gray-500">持续更新中...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 游戏预览弹窗 -->
+    <div id="gameModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
+                <!-- 头部 -->
+                <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+                    <div>
+                        <h3 id="gameTitle" class="text-xl font-bold text-gray-900">2048数字方块</h3>
+                        <p id="gameMeta" class="text-sm text-gray-500">益智 • 3分钟 • 简单</p>
+                    </div>
+                    <button onclick="closeGameModal()" class="p-2 hover:bg-gray-100 rounded-full">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- 游戏预览 -->
+                <div class="p-6 bg-gray-50">
+                    <div class="bg-white rounded-xl p-8 text-center">
+                        <div class="w-20 h-20 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <span class="text-4xl" id="gameIcon">🧩</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">游戏预览</h4>
+                        <p class="text-gray-600 mb-6">这是一款轻量级解压小游戏，专为碎片时间设计</p>
+
+                        <div class="grid grid-cols-3 gap-4 mb-6">
+                            <div class="bg-gray-50 rounded-lg p-3">
+                                <div class="text-2xl font-bold text-indigo-500" id="gamePlayTime">3</div>
+                                <div class="text-xs text-gray-500">预计时长(分钟)</div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-3">
+                                <div class="text-2xl font-bold text-green-500" id="gameSize">256KB</div>
+                                <div class="text-xs text-gray-500">文件大小</div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-3">
+                                <div class="text-2xl font-bold text-yellow-500" id="gameLoadTime">1.2s</div>
+                                <div class="text-xs text-gray-500">加载时间</div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 text-sm text-gray-600 mb-6">
+                            <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                                <span>📱 完美适配手机</span>
+                                <span class="text-green-500">✓ 支持</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                                <span>🎮 触屏操作优化</span>
+                                <span class="text-green-500">✓ 支持</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                                <span>🚫 无广告干扰</span>
+                                <span class="text-green-500">✓ 纯净体验</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                                <span>💾 离线游戏</span>
+                                <span class="text-green-500">✓ 支持</span>
+                            </div>
+                        </div>
+
+                        <button class="w-full px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-full font-medium hover:shadow-lg transition-shadow" onclick="startGame()">
+                            🎮 开始游戏
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // 游戏数据
+        const games = {
+            101: { title: '2048数字方块', category: '益智', playTime: 3, difficulty: '简单', icon: '🧩', size: '256KB', loadTime: '1.2s', description: '数字合成游戏，锻炼逻辑思维' },
+            102: { title: '彩球消除', category: '消除', playTime: 5, difficulty: '简单', icon: '🎯', size: '180KB', loadTime: '0.8s', description: '点击消除相同颜色的彩球' },
+            103: { title: '极速打字', category: '打字', playTime: 2, difficulty: '中等', icon: '⌨️', size: '95KB', loadTime: '0.5s', description: '测试你的打字速度和准确度' },
+            201: { title: '迷你扫雷', category: '策略', playTime: 6, difficulty: '中等', icon: '💣', size: '120KB', loadTime: '0.7s', description: '经典扫雷游戏的简化版' },
+            202: { title: '记忆翻牌', category: '记忆', playTime: 4, difficulty: '简单', icon: '🧠', size: '200KB', loadTime: '1.0s', description: '翻开相同的卡片进行配对' },
+            301: { title: '数字填色', category: '填色', playTime: 8, difficulty: '简单', icon: '🎨', size: '350KB', loadTime: '1.5s', description: '按数字填充颜色，创作美丽图案' },
+            302: { title: '模拟钓鱼', category: '模拟', playTime: 10, difficulty: '简单', icon: '🎣', size: '420KB', loadTime: '2.0s', description: '轻松的钓鱼体验，收集各种鱼类' },
+            401: { title: '打地鼠', category: '反应', playTime: 3, difficulty: '简单', icon: '🔨', size: '150KB', loadTime: '0.6s', description: '快速点击出现的地鼠' },
+            402: { title: '泡泡龙', category: '射击', playTime: 5, difficulty: '中等', icon: '🫧', size: '280KB', loadTime: '1.3s', description: '发射泡泡消除相同颜色的泡泡群' }
+        };
+
+        let currentScenario = '通勤';
+
+        // 设置场景
+        function setScenario(scenario) {
+            currentScenario = scenario;
+
+            // 更新按钮状态
+            document.querySelectorAll('.scenario-btn').forEach(btn => {
+                if (btn.textContent.includes(scenario)) {
+                    btn.className = 'scenario-btn px-3 py-1 text-sm rounded-full bg-indigo-500 text-white';
+                } else {
+                    btn.className = 'scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200';
+                }
+            });
+
+            updateRecommendations();
+            showToast(`已切换到${scenario}场景`, 'info');
+        }
+
+        // 更新推荐
+        function updateRecommendations() {
+            const scenarioGames = {
+                '通勤': [101, 103, 401],
+                '午休': [201, 202, 402],
+                '摸鱼': [101, 102, 202],
+                '减压': [102, 301, 302],
+                '睡前': [301, 302],
+                '提神': [103, 401, 402]
+            };
+
+            document.getElementById('recommendationReason').textContent = `最适合${currentScenario}时间`;
+        }
+
+        // 刷新推荐
+        function refreshRecommendations() {
+            showToast('推荐游戏已刷新', 'success');
+            updateRecommendations();
+        }
+
+        // 筛选分类
+        function filterByCategory(category) {
+            showToast(`筛选${category === 'all' ? '全部' : category}游戏`, 'info');
+        }
+
+        // 显示更多游戏
+        function showMoreGames() {
+            showToast('更多游戏正在开发中...', 'info');
+        }
+
+        // 打开游戏预览
+        function openGamePreview(gameId) {
+            const game = games[gameId];
+            if (!game) return;
+
+            document.getElementById('gameTitle').textContent = game.title;
+            document.getElementById('gameMeta').textContent = `${game.category} • ${game.playTime}分钟 • ${game.difficulty}`;
+            document.getElementById('gameIcon').textContent = game.icon;
+            document.getElementById('gamePlayTime').textContent = game.playTime;
+            document.getElementById('gameSize').textContent = game.size;
+            document.getElementById('gameLoadTime').textContent = game.loadTime;
+
+            document.getElementById('gameModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 关闭游戏预览
+        function closeGameModal() {
+            document.getElementById('gameModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // 开始游戏
+        function startGame() {
+            closeGameModal();
+            showToast('游戏即将开始，请稍候...', 'success');
+
+            // 模拟游戏加载
+            setTimeout(() => {
+                showToast('🎮 游戏已加载完成，祝您游戏愉快！', 'success');
+            }, 2000);
+        }
+
+        // 显示提示
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-full shadow-lg z-50 text-white animate-bounce ${
+                type === 'error' ? 'bg-red-500' :
+                type === 'success' ? 'bg-green-500' : 'bg-blue-500'
+            }`;
+            toast.textContent = message;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // 点击外部关闭弹窗
+        document.getElementById('gameModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeGameModal();
+            }
+        });
+
+        // 键盘快捷键
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeGameModal();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameGate - Lite Stress-Relief Mini Games Platform</title>
+    <meta name="description" content="Play instantly, no-burden casual fun - Lite mini games designed for fragmented time">
+    <meta name="keywords" content="mini games, casual games, online games, instant play, stress relief games, office games, mini games aggregation">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="manifest" href="/manifest_en.json">
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style">
+    <link rel="preload" href="/src/styles/main.css" as="style">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#8b5cf6',
+                        accent: '#ec4899',
+                        'gaming': '#10b981',
+                        'relax': '#3b82f6',
+                        'focus': '#f59e0b',
+                        'quick': '#ef4444'
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'ui-sans-serif', 'system-ui']
+                    },
+                    animation: {
+                        'float': 'float 3s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s ease-in-out infinite',
+                        'bounce-slow': 'bounce 2s ease-in-out infinite',
+                        'gradient': 'gradient 8s linear infinite'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        gradient: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="GameGate - Lite Stress-Relief Mini Games Platform">
+    <meta property="og:description" content="Play instantly, no-burden casual fun - Lite mini games designed for fragmented time">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="/">
+    <meta property="og:image" content="/og-image.jpg">
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="GameGate">
+
+    <!-- Performance optimization -->
+    <link rel="dns-prefetch" href="//api.gamegate.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen font-sans">
+
+    <!-- Top Navigation -->
+    <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo and Brand -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-primary to-secondary rounded-xl flex items-center justify-center animate-gradient bg-size-200">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M21.6 8.2l-9.6-6c-.6-.4-1.4-.4-2 0l-9.6 6c-.6.4-1 1-1 1.7v8.2c0 .7.4 1.3 1 1.7l9.6 6c.6.4 1.4.4 2 0l9.6-6c.6-.4 1-1 1-1.7V9.9c0-.7-.4-1.3-1-1.7zM12 17.2l-6.8-4.2 6.8-4.2 6.8 4.2-6.8 4.2z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">GameGate</h1>
+                        <p class="text-xs text-gray-500">Lite Stress-Relief Games</p>
+                    </div>
+                </div>
+
+                <!-- Middle Scenario Selection -->
+                <div class="hidden md:flex items-center space-x-2 bg-gray-50 rounded-full px-4 py-2">
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full bg-primary text-white" data-scenario="commute">
+                        🚇 Commute
+                    </button>
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200 transition-colors" data-scenario="lunch">
+                        ☕ Lunch
+                    </button>
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200 transition-colors" data-scenario="office">
+                        🐟 Office
+                    </button>
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200 transition-colors" data-scenario="stress">
+                        🧘 Stress Relief
+                    </button>
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200 transition-colors" data-scenario="bedtime">
+                        🌙 Bedtime
+                    </button>
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200 transition-colors" data-scenario="focus">
+                        ⚡ Focus
+                    </button>
+                </div>
+
+                <!-- Right Side Actions -->
+                <div class="flex items-center space-x-4">
+                    <!-- Time Filter -->
+                    <select id="timeFilter" class="hidden sm:block px-3 py-1 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50">
+                        <option value="30">All Duration</option>
+                        <option value="5">Under 5 min</option>
+                        <option value="10">Under 10 min</option>
+                        <option value="15">Under 15 min</option>
+                    </select>
+
+                    <!-- Search -->
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="Search games..."
+                               class="w-48 sm:w-64 px-4 py-2 pl-10 text-sm border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-transparent">
+                        <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+
+                    <!-- User Avatar -->
+                    <button id="userMenuBtn" class="w-8 h-8 bg-gradient-to-r from-primary to-secondary rounded-full flex items-center justify-center text-white hover:shadow-lg transition-shadow">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- Hero Section -->
+        <section class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">
+                <span class="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                    Play Instantly, No-Burden Casual Fun
+                </span>
+            </h2>
+            <p class="text-gray-600 mb-6 max-w-2xl mx-auto">
+                Lite stress-relief mini games designed for fragmented time - support for commute, lunch break, office, stress relief, bedtime, and focus scenarios to make your waiting time more interesting
+            </p>
+
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-6">
+                <div class="bg-white rounded-xl p-4 shadow-sm">
+                    <div class="text-2xl font-bold text-primary">10+</div>
+                    <div class="text-sm text-gray-500">Selected Games</div>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow-sm">
+                    <div class="text-2xl font-bold text-gaming">3-10</div>
+                    <div class="text-sm text-gray-500">Minutes Duration</div>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow-sm">
+                    <div class="text-2xl font-bold text-focus">6</div>
+                    <div class="text-sm text-gray-500">Use Scenarios</div>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow-sm">
+                    <div class="text-2xl font-bold text-relax">100%</div>
+                    <div class="text-sm text-gray-500">Instant Play</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Game Category Filter -->
+        <section class="mb-6">
+            <div class="flex flex-wrap gap-2 justify-center">
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium hover:shadow-md transition-shadow" data-category="all">
+                    All Games
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium hover:shadow-md transition-shadow" data-category="puzzle">
+                    🧩 Puzzle
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium hover:shadow-md transition-shadow" data-category="match">
+                    🎯 Match-3
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium hover:shadow-md transition-shadow" data-category="reaction">
+                    ⚡ Reaction
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium hover:shadow-md transition-shadow" data-category="memory">
+                    🧠 Memory
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium hover:shadow-md transition-shadow" data-category="strategy">
+                    ♟️ Strategy
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium hover:shadow-md transition-shadow" data-category="coloring">
+                    🎨 Coloring
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium hover:shadow-md transition-shadow" data-category="simulation">
+                    🎮 Simulation
+                </button>
+            </div>
+        </section>
+
+        <!-- Recommended Games Section -->
+        <section class="mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">Recommended For You</h3>
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm text-gray-500" id="recommendationReason">Based on current scenario</span>
+                    <button id="refreshRecommendations" class="p-1 hover:bg-gray-100 rounded-full">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="recommendedGames" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <!-- Recommended games will be dynamically loaded -->
+            </div>
+        </section>
+
+        <!-- Games List -->
+        <section>
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">All Games</h3>
+                <div class="flex items-center space-x-4">
+                    <select id="sortBy" class="px-3 py-1 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50">
+                        <option value="popularity">Popular First</option>
+                        <option value="playTime">Duration First</option>
+                        <option value="rating">Rating First</option>
+                        <option value="newest">Newest First</option>
+                    </select>
+                    <div class="flex items-center space-x-1 text-sm text-gray-500">
+                        <span id="gameCount">Loading...</span>
+                        <span>games</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="gamesGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Game cards will be dynamically loaded -->
+            </div>
+
+            <!-- Load More -->
+            <div class="text-center mt-8">
+                <button id="loadMoreBtn" class="px-6 py-2 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors">
+                    Load More
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Game Modal -->
+    <div id="gameModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+                <!-- Header -->
+                <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+                    <div>
+                        <h3 id="gameTitle" class="text-xl font-bold text-gray-900">Game Name</h3>
+                        <p id="gameMeta" class="text-sm text-gray-500">Category • Duration • Difficulty</p>
+                    </div>
+                    <button id="closeGameModal" class="p-2 hover:bg-gray-100 rounded-full">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Game Container -->
+                <div class="relative bg-gray-100" style="height: 500px;">
+                    <iframe id="gameFrame" src="" class="w-full h-full border-0" allowfullscreen></iframe>
+                    <div id="gameLoading" class="absolute inset-0 bg-white/90 flex items-center justify-center">
+                        <div class="text-center">
+                            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                            <p class="text-gray-600">Loading game...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Actions -->
+                <div class="p-4 border-t border-gray-100 flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm text-gray-500">Duration: <span id="gamePlayTime">5</span> min</span>
+                        <span class="text-sm text-gray-500">Difficulty: <span id="gameDifficulty">Easy</span></span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button id="gameLikeBtn" class="p-2 hover:bg-gray-100 rounded-full">
+                            <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                        </button>
+                        <button id="gameShareBtn" class="p-2 hover:bg-gray-100 rounded-full">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Stats -->
+    <footer class="bg-white/80 backdrop-blur-md border-t border-gray-100 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="text-center text-sm text-gray-500">
+                <p>🎮 GameGate - Lite Stress-Relief Mini Games Platform</p>
+                <p class="mt-1">Instant Play • No Ads • No Burden • Pure Fun</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script type="module" src="/src/js/main_en.js"></script>
+</body>
+</html>

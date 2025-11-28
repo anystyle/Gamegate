@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameGate Preview - Lite Stress-Relief Mini Games Platform</title>
+    <meta name="description" content="Play instantly, no-burden casual fun - Lite mini games designed for fragmented time">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .animate-gradient {
+            background-size: 200% 200%;
+            animation: gradient 8s linear infinite;
+        }
+
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .game-card {
+            transition: all 0.3s ease;
+        }
+
+        .game-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .scenario-btn {
+            transition: all 0.2s ease;
+        }
+
+        .scenario-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 min-h-screen font-sans">
+    <!-- Top Navigation -->
+    <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo and Brand -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center animate-gradient bg-size-200">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M21.6 8.2l-9.6-6c-.6-.4-1.4-.4-2 0l-9.6 6c-.6.4-1 1-1 1.7v8.2c0 .7.4 1.3 1 1.7l9.6 6c.6.4 1.4.4 2 0l9.6-6c.6-.4 1-1 1-1.7V9.9c0-.7-.4-1.3-1-1.7zM12 17.2l-6.8-4.2 6.8-4.2 6.8 4.2-6.8 4.2z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">GameGate</h1>
+                        <p class="text-xs text-gray-500">Lite Stress-Relief Games</p>
+                    </div>
+                </div>
+
+                <!-- Scenario Selection -->
+                <div class="hidden md:flex items-center space-x-2 bg-gray-50 rounded-full px-4 py-2">
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full bg-indigo-500 text-white" onclick="setScenario('commute')">
+                        🚇 Commute
+                    </button>
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200" onclick="setScenario('lunch')">
+                        ☕ Lunch
+                    </button>
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200" onclick="setScenario('office')">
+                        🐟 Office
+                    </button>
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200" onclick="setScenario('stress')">
+                        🧘 Stress Relief
+                    </button>
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200" onclick="setScenario('bedtime')">
+                        🌙 Bedtime
+                    </button>
+                    <button class="scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200" onclick="setScenario('focus')">
+                        ⚡ Focus
+                    </button>
+                </div>
+
+                <!-- Search -->
+                <div class="relative">
+                    <input type="text" placeholder="Search games..." class="w-48 sm:w-64 px-4 py-2 pl-10 text-sm border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-transparent">
+                    <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Hero Section -->
+        <section class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">
+                <span class="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+                    Play Instantly, No-Burden Casual Fun
+                </span>
+            </h2>
+            <p class="text-gray-600 mb-6 max-w-2xl mx-auto">
+                Lite stress-relief mini games designed for fragmented time - support for commute, lunch break, office, stress relief, bedtime, and focus scenarios to make your waiting time more interesting
+            </p>
+
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto mb-6">
+                <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="text-2xl font-bold text-indigo-500">10+</div>
+                    <div class="text-sm text-gray-500">Selected Games</div>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="text-2xl font-bold text-green-500">3-10</div>
+                    <div class="text-sm text-gray-500">Minutes Duration</div>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="text-2xl font-bold text-amber-500">6</div>
+                    <div class="text-sm text-gray-500">Use Scenarios</div>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
+                    <div class="text-2xl font-bold text-blue-500">100%</div>
+                    <div class="text-sm text-gray-500">Instant Play</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Game Category Filter -->
+        <section class="mb-6">
+            <div class="flex flex-wrap gap-2 justify-center">
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium shadow-sm hover:shadow-md" onclick="filterByCategory('all')">
+                    All Games
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium shadow-sm hover:shadow-md" onclick="filterByCategory('puzzle')">
+                    🧩 Puzzle
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium shadow-sm hover:shadow-md" onclick="filterByCategory('match')">
+                    🎯 Match-3
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium shadow-sm hover:shadow-md" onclick="filterByCategory('reaction')">
+                    ⚡ Reaction
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium shadow-sm hover:shadow-md" onclick="filterByCategory('memory')">
+                    🧠 Memory
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium shadow-sm hover:shadow-md" onclick="filterByCategory('strategy')">
+                    ♟️ Strategy
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium shadow-sm hover:shadow-md" onclick="filterByCategory('coloring')">
+                    🎨 Coloring
+                </button>
+                <button class="category-btn px-4 py-2 bg-white rounded-full text-sm font-medium shadow-sm hover:shadow-md" onclick="filterByCategory('simulation')">
+                    🎮 Simulation
+                </button>
+            </div>
+        </section>
+
+        <!-- Recommended Games Section -->
+        <section class="mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">Recommended For You</h3>
+                <div class="flex items-center space-x-2">
+                    <span class="text-sm text-gray-500" id="recommendationReason">Based on current scenario</span>
+                    <button class="p-1 hover:bg-gray-100 rounded-full" onclick="refreshRecommendations()">
+                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div id="recommendedGames" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                <!-- Recommended games -->
+                <div class="bg-white rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow" onclick="openGamePreview(2048)">
+                    <div class="aspect-square bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg mb-2 flex items-center justify-center animate-float">
+                        <span class="text-3xl">🧩</span>
+                    </div>
+                    <h4 class="font-medium text-sm text-gray-900 mb-1 truncate">2048 Number Puzzle</h4>
+                    <p class="text-xs text-gray-500">3 min • Easy</p>
+                    <p class="text-xs text-indigo-600 mt-1">Perfect for commute time</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow" onclick="openGamePreview(102)">
+                    <div class="aspect-square bg-gradient-to-br from-pink-100 to-orange-100 rounded-lg mb-2 flex items-center justify-center animate-float">
+                        <span class="text-3xl">🎯</span>
+                    </div>
+                    <h4 class="font-medium text-sm text-gray-900 mb-1 truncate">Bubble Crush</h4>
+                    <p class="text-xs text-gray-500">5 min • Easy</p>
+                    <p class="text-xs text-indigo-600 mt-1">Stress relief favorite</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow" onclick="openGamePreview(103)">
+                    <div class="aspect-square bg-gradient-to-br from-green-100 to-blue-100 rounded-lg mb-2 flex items-center justify-center animate-float">
+                        <span class="text-3xl">⌨️</span>
+                    </div>
+                    <h4 class="font-medium text-sm text-gray-900 mb-1 truncate">Speed Typing</h4>
+                    <p class="text-xs text-gray-500">2 min • Medium</p>
+                    <p class="text-xs text-indigo-600 mt-1">Improve typing speed</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow" onclick="openGamePreview(201)">
+                    <div class="aspect-square bg-gradient-to-br from-yellow-100 to-red-100 rounded-lg mb-2 flex items-center justify-center animate-float">
+                        <span class="text-3xl">💣</span>
+                    </div>
+                    <h4 class="font-medium text-sm text-gray-900 mb-1 truncate">Mini Minesweeper</h4>
+                    <p class="text-xs text-gray-500">6 min • Medium</p>
+                    <p class="text-xs text-indigo-600 mt-1">Classic puzzle game</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow" onclick="openGamePreview(202)">
+                    <div class="aspect-square bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg mb-2 flex items-center justify-center animate-float">
+                        <span class="text-3xl">🧠</span>
+                    </div>
+                    <h4 class="font-medium text-sm text-gray-900 mb-1 truncate">Memory Match</h4>
+                    <p class="text-xs text-gray-500">4 min • Easy</p>
+                    <p class="text-xs text-indigo-600 mt-1">Memory training</p>
+                </div>
+
+                <div class="bg-white rounded-xl p-3 cursor-pointer hover:shadow-md transition-shadow" onclick="openGamePreview(402)">
+                    <div class="aspect-square bg-gradient-to-br from-cyan-100 to-blue-100 rounded-lg mb-2 flex items-center justify-center animate-float">
+                        <span class="text-3xl">🫧</span>
+                    </div>
+                    <h4 class="font-medium text-sm text-gray-900 mb-1 truncate">Bubble Shooter</h4>
+                    <p class="text-xs text-gray-500">5 min • Medium</p>
+                    <p class="text-xs text-indigo-600 mt-1">Casual matching game</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Games List -->
+        <section>
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-900">All Games</h3>
+                <div class="flex items-center space-x-4">
+                    <select class="px-3 py-1 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50">
+                        <option value="popularity">Popular First</option>
+                        <option value="playTime">Duration First</option>
+                        <option value="rating">Rating First</option>
+                        <option value="newest">Newest First</option>
+                    </select>
+                    <div class="flex items-center space-x-1 text-sm text-gray-500">
+                        <span>12</span>
+                        <span>games</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- 2048 Number Puzzle -->
+                <div class="game-card bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer" onclick="openGamePreview(101)">
+                    <div class="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white/80 rounded-full flex items-center justify-center">
+                                <span class="text-2xl">🧩</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 px-2 py-1 bg-white/90 rounded-full text-xs font-medium">
+                            3 min
+                        </div>
+                        <div class="absolute top-2 left-2 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                            Easy
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-1">2048 Number Puzzle</h3>
+                        <p class="text-sm text-gray-600 mb-2 line-clamp-2">Number merging game that exercises logical thinking</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-500">Puzzle</span>
+                                <span class="text-gray-400">•</span>
+                                <div class="flex items-center">
+                                    <svg class="w-3 h-3 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                    </svg>
+                                    <span class="text-gray-700">4.5</span>
+                                </div>
+                            </div>
+                            <span class="text-green-500">✓ Ad-Free</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bubble Crush -->
+                <div class="game-card bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer" onclick="openGamePreview(102)">
+                    <div class="aspect-video bg-gradient-to-br from-pink-100 to-orange-100 relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white/80 rounded-full flex items-center justify-center">
+                                <span class="text-2xl">🎯</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 px-2 py-1 bg-white/90 rounded-full text-xs font-medium">
+                            5 min
+                        </div>
+                        <div class="absolute top-2 left-2 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                            Easy
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-1">Bubble Crush</h3>
+                        <p class="text-sm text-gray-600 mb-2 line-clamp-2">Click to eliminate same-colored bubbles</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-500">Match-3</span>
+                                <span class="text-gray-400">•</span>
+                                <div class="flex items-center">
+                                    <svg class="w-3 h-3 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                    </svg>
+                                    <span class="text-gray-700">4.3</span>
+                                </div>
+                            </div>
+                            <span class="text-green-500">✓ Ad-Free</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Speed Typing -->
+                <div class="game-card bg-white rounded-xl shadow-sm overflow-hidden cursor-pointer" onclick="openGamePreview(103)">
+                    <div class="aspect-video bg-gradient-to-br from-green-100 to-blue-100 relative overflow-hidden">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white/80 rounded-full flex items-center justify-center">
+                                <span class="text-2xl">⌨️</span>
+                            </div>
+                        </div>
+                        <div class="absolute top-2 right-2 px-2 py-1 bg-white/90 rounded-full text-xs font-medium">
+                            2 min
+                        </div>
+                        <div class="absolute top-2 left-2 px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs font-medium">
+                            Medium
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-1">Speed Typing</h3>
+                        <p class="text-sm text-gray-600 mb-2 line-clamp-2">Test your typing speed and accuracy</p>
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center space-x-2">
+                                <span class="text-gray-500">Typing</span>
+                                <span class="text-gray-400">•</span>
+                                <div class="flex items-center">
+                                    <svg class="w-3 h-3 text-yellow-400 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                                    </svg>
+                                    <span class="text-gray-700">4.2</span>
+                                </div>
+                            </div>
+                            <span class="text-green-500">✓ Ad-Free</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- More games... -->
+                <div class="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-sm overflow-hidden cursor-pointer flex items-center justify-center border-2 border-dashed border-gray-300" onclick="showMoreGames()">
+                    <div class="text-center p-6">
+                        <svg class="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        <h3 class="font-medium text-gray-700 mb-1">More Games</h3>
+                        <p class="text-xs text-gray-500">Continuously updating...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Game Preview Modal -->
+    <div id="gameModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
+                <!-- Header -->
+                <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+                    <div>
+                        <h3 id="gameTitle" class="text-xl font-bold text-gray-900">2048 Number Puzzle</h3>
+                        <p id="gameMeta" class="text-sm text-gray-500">Puzzle • 3 min • Easy</p>
+                    </div>
+                    <button onclick="closeGameModal()" class="p-2 hover:bg-gray-100 rounded-full">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Game Preview -->
+                <div class="p-6 bg-gray-50">
+                    <div class="bg-white rounded-xl p-8 text-center">
+                        <div class="w-20 h-20 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                            <span class="text-4xl" id="gameIcon">🧩</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-gray-900 mb-2">Game Preview</h4>
+                        <p class="text-gray-600 mb-6">This is a lite stress-relief mini game designed for fragmented time</p>
+
+                        <div class="grid grid-cols-3 gap-4 mb-6">
+                            <div class="bg-gray-50 rounded-lg p-3">
+                                <div class="text-2xl font-bold text-indigo-500" id="gamePlayTime">3</div>
+                                <div class="text-xs text-gray-500">Duration (min)</div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-3">
+                                <div class="text-2xl font-bold text-green-500" id="gameSize">256KB</div>
+                                <div class="text-xs text-gray-500">File Size</div>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-3">
+                                <div class="text-2xl font-bold text-yellow-500" id="gameLoadTime">1.2s</div>
+                                <div class="text-xs text-gray-500">Load Time</div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2 text-sm text-gray-600 mb-6">
+                            <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                                <span>📱 Perfect for mobile</span>
+                                <span class="text-green-500">✓ Supported</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                                <span>🎮 Touch-optimized</span>
+                                <span class="text-green-500">✓ Supported</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                                <span>🚫 No ads</span>
+                                <span class="text-green-500">✓ Clean experience</span>
+                            </div>
+                            <div class="flex items-center justify-between p-2 bg-gray-50 rounded">
+                                <span>💾 Offline play</span>
+                                <span class="text-green-500">✓ Supported</span>
+                            </div>
+                        </div>
+
+                        <button class="w-full px-6 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-full font-medium hover:shadow-lg transition-shadow" onclick="startGame()">
+                            🎮 Start Game
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Game data
+        const games = {
+            101: { title: '2048 Number Puzzle', category: 'Puzzle', playTime: 3, difficulty: 'Easy', icon: '🧩', size: '256KB', loadTime: '1.2s', description: 'Number merging game that exercises logical thinking' },
+            102: { title: 'Bubble Crush', category: 'Match-3', playTime: 5, difficulty: 'Easy', icon: '🎯', size: '180KB', loadTime: '0.8s', description: 'Click to eliminate same-colored bubbles' },
+            103: { title: 'Speed Typing', category: 'Typing', playTime: 2, difficulty: 'Medium', icon: '⌨️', size: '95KB', loadTime: '0.5s', description: 'Test your typing speed and accuracy' },
+            201: { title: 'Mini Minesweeper', category: 'Strategy', playTime: 6, difficulty: 'Medium', icon: '💣', size: '120KB', loadTime: '0.7s', description: 'Simplified version of classic minesweeper' },
+            202: { title: 'Memory Match', category: 'Memory', playTime: 4, difficulty: 'Easy', icon: '🧠', size: '200KB', loadTime: '1.0s', description: 'Flip and match identical cards' },
+            301: { title: 'Color by Numbers', category: 'Coloring', playTime: 8, difficulty: 'Easy', icon: '🎨', size: '350KB', loadTime: '1.5s', description: 'Fill colors by numbers to create beautiful patterns' },
+            302: { title: 'Fishing Simulator', category: 'Simulation', playTime: 10, difficulty: 'Easy', icon: '🎣', size: '420KB', loadTime: '2.0s', description: 'Relaxed fishing experience, collect various fish' },
+            401: { title: 'Whack-a-Mole', category: 'Reaction', playTime: 3, difficulty: 'Easy', icon: '🔨', size: '150KB', loadTime: '0.6s', description: 'Quickly click on appearing moles' },
+            402: { title: 'Bubble Shooter', category: 'Shooting', playTime: 5, difficulty: 'Medium', icon: '🫧', size: '280KB', loadTime: '1.3s', description: 'Shoot bubbles to eliminate same-colored bubble groups' }
+        };
+
+        let currentScenario = 'commute';
+
+        // Set scenario
+        function setScenario(scenario) {
+            currentScenario = scenario;
+
+            // Update button states
+            document.querySelectorAll('.scenario-btn').forEach(btn => {
+                if (btn.textContent.includes(scenario)) {
+                    btn.className = 'scenario-btn px-3 py-1 text-sm rounded-full bg-indigo-500 text-white';
+                } else {
+                    btn.className = 'scenario-btn px-3 py-1 text-sm rounded-full hover:bg-gray-200';
+                }
+            });
+
+            updateRecommendations();
+            showToast(`Switched to ${scenario} scenario`, 'info');
+        }
+
+        // Update recommendations
+        function updateRecommendations() {
+            const scenarioGames = {
+                'commute': [101, 103, 401],
+                'lunch': [201, 202, 402],
+                'office': [101, 102, 202],
+                'stress': [102, 301, 302],
+                'bedtime': [301, 302],
+                'focus': [103, 401, 402]
+            };
+
+            document.getElementById('recommendationReason').textContent = `Perfect for ${currentScenario} time`;
+        }
+
+        // Refresh recommendations
+        function refreshRecommendations() {
+            showToast('Recommendations refreshed', 'success');
+            updateRecommendations();
+        }
+
+        // Filter by category
+        function filterByCategory(category) {
+            showToast(`Filtering ${category === 'all' ? 'all' : category} games`, 'info');
+        }
+
+        // Show more games
+        function showMoreGames() {
+            showToast('More games coming soon...', 'info');
+        }
+
+        // Open game preview
+        function openGamePreview(gameId) {
+            const game = games[gameId];
+            if (!game) return;
+
+            document.getElementById('gameTitle').textContent = game.title;
+            document.getElementById('gameMeta').textContent = `${game.category} • ${game.playTime} min • ${game.difficulty}`;
+            document.getElementById('gameIcon').textContent = game.icon;
+            document.getElementById('gamePlayTime').textContent = game.playTime;
+            document.getElementById('gameSize').textContent = game.size;
+            document.getElementById('gameLoadTime').textContent = game.loadTime;
+
+            document.getElementById('gameModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close game preview
+        function closeGameModal() {
+            document.getElementById('gameModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Start game
+        function startGame() {
+            closeGameModal();
+            showToast('Game loading soon, please wait...', 'success');
+
+            // Simulate game loading
+            setTimeout(() => {
+                showToast('🎮 Game loaded successfully, enjoy your game!', 'success');
+            }, 2000);
+        }
+
+        // Show toast
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-full shadow-lg z-50 text-white animate-bounce ${
+                type === 'error' ? 'bg-red-500' :
+                type === 'success' ? 'bg-green-500' : 'bg-blue-500'
+            }`;
+            toast.textContent = message;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Click outside to close modal
+        document.getElementById('gameModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeGameModal();
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeGameModal();
+            }
+        });
+    </script>
+</body>
+</html>
