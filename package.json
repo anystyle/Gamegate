@@ -1,7 +1,7 @@
 {
   "name": "gamegate",
   "version": "1.0.0",
-  "description": "轻量级解压小游戏聚合平台 - 即开即玩、无负担休闲",
+  "description": "Lite stress-relief mini games platform - Play instantly, no-burden casual fun",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
@@ -10,13 +10,15 @@
     "dev:client": "vite",
     "build": "npm run build:client && npm run build:server",
     "build:client": "vite build",
-    "build:vercel": "vite build",
     "build:server": "webpack --mode production",
+    "build:vercel": "vite build",
+    "build:local": "webpack --mode production",
     "test": "jest",
     "lint": "eslint src/",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "vercel-build": "vercel build"
   },
-  "keywords": ["小游戏", "休闲游戏", "在线游戏", "即开即玩", "减压游戏", "摸鱼", "小游戏聚合", "网页游戏"],
+  "keywords": ["mini games", "casual games", "online games", "instant play", "stress relief games", "office games", "mini games aggregation", "web games"],
   "author": "",
   "license": "MIT",
   "dependencies": {
@@ -26,8 +28,7 @@
     "dotenv": "^16.3.1",
     "compression": "^1.7.4",
     "express-rate-limit": "^6.10.0",
-    "node-cache": "^5.1.2",
-    "path": "^0.12.7"
+    "node-cache": "^5.1.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
@@ -39,5 +40,15 @@
     "terser": "^5.19.2",
     "webpack": "^5.103.0",
     "webpack-cli": "^6.0.1"
+  },
+  "vercel": {
+    "buildCommand": "npm run build:vercel",
+    "devCommand": "npm run dev",
+    "functions": {
+      "src/api/index.js": {
+        "runtime": "nodejs18.x",
+        "maxDuration": 10
+      }
+    }
   }
 }
